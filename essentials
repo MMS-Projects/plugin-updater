@@ -1,0 +1,18 @@
+#!/bin/sh
+TARGET="`pwd`/plugins"
+PLUGIN="Essentials"
+URL=$1
+VERSION=$2
+TARGET_DATA="`pwd`/plugin-data/$PLUGIN"
+mkdir -p $TARGET_DATA $TARGET
+
+TMP_TARGET=`mktemp -d`
+
+./download -e zip -t "$TMP_TARGET" -O "essentials.zip" "$PLUGIN" "$URL" "$VERSION"
+
+cd $TMP_TARGET
+unzip $TMP_TARGET/essentials.zip
+cp $TMP_TARGET/Essentials.jar $TARGET/$PLUGIN-v$VERSION.jar
+cp $TMP_TARGET/EssentialsSpawn.jar $TARGET/${PLUGIN}Spawn-v$VERSION.jar
+cd $TARGET/..
+

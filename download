@@ -1,0 +1,40 @@
+#!/bin/sh
+
+TARGET="plugins"
+EXTENSION="jar"
+while getopts "t:e:O:" option
+do
+    case $option in
+        t)
+            TARGET=$OPTARG
+            echo $TARGET
+        ;;
+        e)
+            EXTENSION=$OPTARG
+        ;;
+        O)
+            FILE=$OPTARG
+        ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+
+PLUGIN=$1
+URL=$2
+VERSION=$3
+
+FILE_DEF="$PLUGIN-v$VERSION.$EXTENSION"
+FILE=${FILE:-$FILE_DEF}
+
+echo "$PLUGIN - Version $VERSION - URL: $URL"
+
+rm -rf "$TARGET\$PLUGIN-v*.*"
+echo "Removed old $PLUGIN"
+
+echo "Checking target directory $TARGET"
+mkdir -p $TARGET
+
+echo "Downloading new $PLUGIN version $VERSION..."
+wget $URL -O $TARGET/$FILE -c
